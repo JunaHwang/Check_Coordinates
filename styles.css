@@ -1,0 +1,378 @@
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #f1f3f5;
+    --another-color: #4e76a3;
+    --text-color: #333;
+    --border-color: #bbb;
+}
+
+h3 {
+	color: var(--primary-color)
+	
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.site-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.site-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.site-title a:hover {
+    color: #2c6cb0;
+}
+
+.tab {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.tab button {
+    background-color: #fff;
+    color: var(--text-color);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 20px;
+    transition: all 0.3s ease;
+    margin: 5px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.tab button:hover,
+.tab button.active {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* General styles for content areas */
+.tabcontent {
+    display: none;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .compare-container {
+        flex-direction: column;
+    }
+
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+
+    .tab {
+        flex-wrap: wrap;
+    }
+
+    .tablinks {
+        flex: 1 1 auto;
+    }
+}
+
+/* Buttons */
+button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #2c6cb0;
+}
+
+/* Styles for text areas and inputs */
+textarea,
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.input-large {
+    height: 150px;
+    resize: vertical;
+}
+
+/* Toast notifications */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(0);
+    z-index: 1000;
+    margin-bottom: 10px;
+}
+
+.toast.fade-out {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    z-index: 1000;
+}
+
+/* Grid container layout */
+.grid-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* General reset styles */
+body, ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* Elements specific to canvas */
+#canvas-container {
+    position: relative;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #000;
+}
+
+#cropped-images-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.cropped-image-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.cropped-image {
+    border: 1px solid #000;
+    display: block;
+}
+
+.number-label {
+    text-align: center;
+    font-family: monospace;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Common container styles */
+.common-container {
+    white-space: pre;
+    font-family: monospace;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin: 0;
+    overflow-y: auto;
+    height: 250px;
+    box-sizing: border-box;
+    width: 400px;
+}
+
+
+/* 레이아웃 컨테이너 스타일 */
+.layout-container {
+    display: flex;
+    flex-direction: row; /* 사이드바와 콘텐츠를 좌우로 배치 */
+    width: 100%;
+}
+
+/* 사이드바 스타일 */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    overflow-y: auto;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    transform: translateX(-230px); /* 기본적으로 화면 밖으로 숨김 */
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+/* 핫존 영역 */
+#hotzone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 100%;
+    background-color: transparent;
+    z-index: 999;
+}
+
+/* 사이드바가 표시될 때의 스타일 */
+#sidebar.visible {
+    transform: translateX(0); /* 사이드바가 나타남 */
+}
+
+/* 본문 영역 스타일 */
+#content {
+    margin-left: 100px; /* 기본적으로 본문이 사이드바에 가려지지 않도록 설정 */
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+
+/* 마우스를 핫존 또는 사이드바에 가져다 댈 때 */
+#hotzone:hover + #sidebar,
+#sidebar:hover {
+    transform: translateX(0); /* 슬라이드하여 화면 안으로 나타남 */
+}
+
+
+
+/* 파일 업로드 input 스타일 */
+#upload-folder {
+    display: block;
+    margin-bottom: 20px;
+    color: white; /* 텍스트 색상 */
+    border: 1px solid #555;
+    padding: 5px;
+    background-color: #444;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#upload-folder:hover {
+    background-color: #555;
+}
+
+/* 파일 목록 스타일 */
+#file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#file-list li {
+    padding: 8px;
+    border-bottom: 1px solid #444;
+}
+
+#file-list li:hover {
+    background-color: #555;
+    cursor: pointer;
+}
+
+/* 작은 화면에서의 사이드바 스타일 */
+@media (max-width: 768px) {
+    #sidebar {
+        width: 200px; /* 작은 화면에서는 더 좁게 */
+        transform: translateX(-180px); /* 초기 위치 조정 */
+    }
+}
+
+
+/* 공통 버튼 스타일 */
+.file-button {
+    display: inline-block;
+    padding: 12px 24px;
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Remove underline if label is styled as a link */
+}
+
+.file-button:hover {
+    background-color: #2c6cb0;
+}
+
+/* 숨겨진 파일 입력 요소 */
+#upload-folder {
+    display: none;
+}
+
+/* 이미지 및 텍스트 업로드 버튼 숨기기 */
+#file-input-image,
+#file-input-txt {
+    display: none;
+}
+
+/* 파일 목록 항목 기본 스타일 */
+#file-list .file-item {
+    cursor: pointer;
+    padding: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 선택된 파일 항목 스타일 */
+#file-list .file-item.selected {
+    background-color: #0056b3; /* 선택된 항목의 배경 색상 */
+    color: white; /* 선택된 항목의 텍스트 색상 */
+    font-style: italic; /* 선택된 항목의 텍스트를 이탤릭체로 설정 */
+}
+
+

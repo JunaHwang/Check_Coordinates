@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Coordinates</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="layout-container">
+		<div id="hotzone"></div>
+		<aside id="sidebar">
+			<button id="clear-data-button">업로드 하기 전에<br>새로 고침 해주세요.</button>
+			<input type="file" id="folder-input" webkitdirectory mozdirectory msdirectory odirectory directory multiple>
+			<p id="folder-name"></p> <!-- 폴더 이름을 출력할 위치 -->
+			<ul id="file-list"></ul>
+		</aside>
+
+	<main id="content">
+		<h3>좌표 확인</h3>
+		<button id="save-text-file">텍스트 파일 저장</button>
+		<p>사용 방법: 업로드 후 드래그</p>
+			<p>
+			되돌리기: Shift+Z<br>다시실행: Shift+X<br>폴리곤 적용: Ctrl+Space
+			</p>
+		<div>
+			<input type="file" id="file-input-image" />
+		</div>
+			<div class="input-area">
+				<div>
+					<input type="file" id="file-input-txt" accept=".txt" />
+				</div>
+				<button id="load-coordinates-button">기존 폴리곤 적용</button>
+				<button id="reset-existing-coordinates-button">폴리곤 초기화</button>
+				<button id="toggle-existing-coordinates-button">토글</button>
+				<textarea id="coordinates-input" class="input-large" placeholder="좌표를 입력하세요"></textarea>
+			</div>
+			<div class="controls">
+				<button id="reset-button">초기화</button>
+				<button id="undo-button">되돌리기</button>
+				<button id="redo-button">다시실행</button><br><br>
+			</div>
+			<div id="canvas-container">
+				<!-- <img id="image" src="" alt="Upload an image"> -->
+				<img id="image" src="" alt= "이미지">
+				<canvas id="canvas"></canvas>
+			</div>
+			<div id="coordinates-cropped-container">
+				<div id="cropped-images-container"></div>
+					<button id="copy-button">좌표 복사</button>
+					<button id="copy-json-button">JSON 복사</button>
+					<button id="scroll-top">맨 위로</button>
+					<textarea id="coordinates" class="input-large"></textarea>
+					<textarea id="json-output"></textarea>
+			</div>
+				<div class="input-section">
+					<h2>기존 JSON 파일 불러오기</h2>
+					<input type="file" id="load-json-file" accept=".json">
+					<textarea id="json-raw" placeholder="기존 JSON 데이터가 여기에 표시됩니다..." readonly></textarea>
+				</div>
+					<button id="merge-json">데이터 병합</button>
+				<div class="input-section">
+					<h2>병합된 JSON</h2>
+					<textarea id="merged-json" placeholder="병합된 JSON 데이터가 여기에 표시됩니다..." readonly></textarea>
+					<button id="save-json">병합된 JSON 저장</button>
+				</div>
+	</main>
+	</div>
+    <script src="script.js"></script>
+</body>
+</html>
