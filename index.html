@@ -15,15 +15,36 @@
 			<p id="folder-name"></p> <!-- 폴더 이름을 출력할 위치 -->
 			<ul id="file-list"></ul>
 		</aside>
-
 	<main id="content">
 		<h3>좌표 확인</h3>
 		<button id="save-text-file">텍스트 파일 저장</button>
 		<p>사용 방법: 업로드 후 드래그</p>
 			<p>
-			되돌리기: Shift+Z<br>다시실행: Shift+X<br>폴리곤 적용: Ctrl+Space
+			되돌리기: Shift+Z<br>다시실행: Shift+X<br>
 			</p>
-		<div>
+        <button class="accordion">특수문자 열기/닫기</button>
+        <div class="panel">
+            <span class="special-char" onclick="copyToClipboard('·')">·</span>
+            <span class="special-char" onclick="copyToClipboard('•')">•</span>
+            <span class="special-char" onclick="copyToClipboard('Ⅰ')">Ⅰ</span>
+            <span class="special-char" onclick="copyToClipboard('Ⅱ')">Ⅱ</span>
+            <span class="special-char" onclick="copyToClipboard('Ⅲ')">Ⅲ</span>
+            <span class="special-char" onclick="copyToClipboard('Ⅳ')">Ⅳ</span>
+            <span class="special-char" onclick="copyToClipboard('Ⅴ')">Ⅴ</span>
+            <span class="special-char" onclick="copyToClipboard('✓')">✓</span>
+            <span class="special-char" onclick="copyToClipboard('←')">←</span>
+            <span class="special-char" onclick="copyToClipboard('↑')">↑</span>
+            <span class="special-char" onclick="copyToClipboard('→')">→</span>
+            <span class="special-char" onclick="copyToClipboard('↓')">↓</span>
+            <span class="special-char" onclick="copyToClipboard('☞')">☞</span>
+            <span class="special-char" onclick="copyToClipboard('●')">●</span>
+            <span class="special-char" onclick="copyToClipboard('■')">■</span>
+            <span class="special-char" onclick="copyToClipboard('▲')">▲</span>
+            <span class="special-char" onclick="copyToClipboard('▶')">▶</span>
+            <!-- 추가로 원하는 특수문자를 여기에 추가 -->
+        </div>
+        <div id="cropped-images-container"></div><br>
+        <div>
 			<input type="file" id="file-input-image" />
 		</div>
 			<div class="input-area">
@@ -33,12 +54,16 @@
 				<button id="load-coordinates-button">기존 폴리곤 적용</button>
 				<button id="reset-existing-coordinates-button">폴리곤 초기화</button>
 				<button id="toggle-existing-coordinates-button">토글</button>
-				<textarea id="coordinates-input" class="input-large" placeholder="좌표를 입력하세요"></textarea>
+				<textarea id="coordinates-input" class="input-large2" placeholder="이 텍스트가 저장됩니다."></textarea>
+			</div>
+			<div id="coordinates-cropped-container">
+                <button id="copy-button">좌표 복사</button>
+                <textarea id="coordinates" class="input-large"></textarea>
 			</div>
 			<div class="controls">
 				<button id="reset-button">초기화</button>
 				<button id="undo-button">되돌리기</button>
-				<button id="redo-button">다시실행</button><br><br>
+				<button id="redo-button">다시실행</button><br>
 			</div>
 			<div id="canvas-container">
 				<!-- <img id="image" src="" alt="Upload an image"> -->
@@ -46,11 +71,8 @@
 				<canvas id="canvas"></canvas>
 			</div>
 			<div id="coordinates-cropped-container">
-				<div id="cropped-images-container"></div>
-					<button id="copy-button">좌표 복사</button>
 					<button id="copy-json-button">JSON 복사</button>
 					<button id="scroll-top">맨 위로</button>
-					<textarea id="coordinates" class="input-large"></textarea>
 					<textarea id="json-output"></textarea>
 			</div>
 				<div class="input-section">
@@ -67,5 +89,6 @@
 	</main>
 	</div>
     <script src="script.js"></script>
+    </script>
 </body>
 </html>

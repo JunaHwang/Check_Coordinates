@@ -785,3 +785,17 @@ function mergeJson(existingJson, newJsonArray) {
 }
 
 
+
+// 아코디언 기능
+document.querySelector('.accordion').addEventListener('click', function () {
+    this.classList.toggle('active');
+    var panel = this.nextElementSibling;
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+});
+
+// 특수문자를 클립보드에 복사
+function copyToClipboard(character) {
+    navigator.clipboard.writeText(character)
+        .then(() => showToast(character + ' 복사 완료'))
+        .catch(err => console.error('복사 실패: ', err));
+}

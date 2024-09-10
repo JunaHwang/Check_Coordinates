@@ -126,6 +126,11 @@ input[type="number"] {
     resize: vertical;
 }
 
+.input-large2 {
+    height: 200px;
+    resize: vertical;
+}
+
 /* Toast notifications */
 .toast {
     position: fixed;
@@ -376,3 +381,13 @@ a {
 }
 
 
+.special-char {
+    font-size: 25px; /* 글씨 크기 설정 */
+    cursor: pointer; /* 클릭 가능한 커서로 설정 */
+    margin: 4px; /* 특수 문자 간격 조정 */
+    padding: 4px; /* 문자와 테두리 사이의 여백 설정 */
+    border: 2px solid #000; /* 검정색 테두리 추가 */
+    border-radius: 1px; /* 모서리를 둥글게 만듦 */
+    display: inline-block; /* 테두리가 잘 적용되도록 블록 요소로 설정 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
