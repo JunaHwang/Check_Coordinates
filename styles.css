@@ -124,12 +124,29 @@ input[type="number"] {
 .input-large {
     height: 150px;
     resize: vertical;
+	font-size: 18px; /* 글씨 크기 조절 */
+	width: 100%;
 }
 
-.input-large2 {
-    height: 200px;
-    resize: vertical;
+textarea.input-large2 {
+    width: 100%; /* 전체 너비 사용 */
+    font-size: 18px; /* 텍스트 크기 조정 */
+    line-height: 1.6; /* 줄 간격 조정 */
+    box-sizing: border-box; /* 패딩과 보더 포함하여 너비 계산 */
+    resize: vertical; /* 사용자가 수직 방향으로 크기를 조정할 수 있도록 설정 */
+    padding: 8px; /* 패딩 추가하여 텍스트와 경계 사이의 간격 확보 */
+    border: 1px solid #ccc; /* 보더 설정 */
+    transition: height 0.1s ease-out; /* 높이 변경 시 부드럽게 애니메이션 */
+    min-height: 500px; /* 기본 최소 높이 설정 */
+    max-height: 1000px; /* 최대 높이 설정 */
+    
+    font-weight: bold; /* 텍스트를 굵게 설정 */
+    color: #333; /* 텍스트 색상 설정 */
+    background-color: #f9f9f9; /* 배경색 설정 */
 }
+
+
+
 
 /* Toast notifications */
 .toast {
@@ -250,15 +267,15 @@ a {
     position: fixed;
     top: 0;
     left: 0;
-    width: 250px;
-    height: 100%;
+    width: 240px;
+    height: 95%;
     background-color: var(--primary-color);
     color: var(--secondary-color);
     overflow-y: auto;
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-    transform: translateX(-230px); /* 기본적으로 화면 밖으로 숨김 */
-    transition: transform 0.3s ease;
+    box-shadow: 4px 0 5px rgba(0, 0, 0, 0.5);
+    transform: translateX(-220px); /* 기본적으로 화면 밖으로 숨김 */
+    transition: transform 0.25s ease;
     z-index: 1000;
 }
 
@@ -270,7 +287,7 @@ a {
     width: 20px;
     height: 100%;
     background-color: transparent;
-    z-index: 999;
+    z-index: 1000;
 }
 
 /* 사이드바가 표시될 때의 스타일 */
@@ -384,10 +401,84 @@ a {
 .special-char {
     font-size: 25px; /* 글씨 크기 설정 */
     cursor: pointer; /* 클릭 가능한 커서로 설정 */
-    margin: 4px; /* 특수 문자 간격 조정 */
-    padding: 4px; /* 문자와 테두리 사이의 여백 설정 */
+    margin: 5px; /* 특수 문자 간격 조정 */
+    padding: 5px; /* 문자와 테두리 사이의 여백 설정 */
     border: 2px solid #000; /* 검정색 테두리 추가 */
     border-radius: 1px; /* 모서리를 둥글게 만듦 */
     display: inline-block; /* 테두리가 잘 적용되도록 블록 요소로 설정 */
     text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+
+
+/* styles.css */
+.custom-cursor {
+    cursor: crosshair; /* 기본 제공 커서 스타일 */
+}
+
+
+/* 십자가 선 스타일 */
+#crosshair-lines {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999; /* 최상위 레이어로 설정 */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.line {
+    position: absolute;
+    background: rgba(0, 0, 255, 0.7); /* 반투명 */
+}
+
+.horizontal {
+    height: 1px;
+}
+
+.vertical {
+    width: 1px;
+}
+
+
+#selected-file-name {
+    position: fixed;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    padding: 10px 20px; /* 텍스트와 테두리 사이의 간격 */
+    font-weight: bold;
+    color: white; /* 텍스트 색상 */
+    background-color: var(--primary-color); /* 배경색: 기본 색상 사용 */
+    border-radius: 8px; /* 둥근 모서리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+    z-index: 1000;
+}
+
+
+
+/* #save-text-file { */
+    /* position: fixed;  /* 고정 위치 */ */
+    /* bottom: 20px;     /* 아래쪽에서 20px */ */
+    /* right: 20px;      /* 오른쪽에서 20px */ */
+    /* z-index: 1000;    /* 다른 요소보다 앞에 오도록 설정 */ */
+/* } */
+
+
+
+#tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    display: none;
+    z-index: 10;
+    font-size: 18px; /* 기본 글씨 크기 설정 */
+    min-width: 100px; /* 최소 너비 설정 */
+    max-width: 300px; /* 최대 너비 설정 */
+    /* white-space: normal; /* 텍스트가 긴 경우 줄 바꿈 허용 */ */
+    /* word-wrap: break-word; /* 단어가 너무 길 경우 줄 바꿈 허용 */ */
 }

@@ -10,7 +10,7 @@
 	<div class="layout-container">
 		<div id="hotzone"></div>
 		<aside id="sidebar">
-			<button id="clear-data-button">업로드 하기 전에<br>새로 고침 해주세요.</button>
+			<button id="clear-data-button">업로드 하기 전에<br>새로 고침 해주세요.</button><br><br>
 			<input type="file" id="folder-input" webkitdirectory mozdirectory msdirectory odirectory directory multiple>
 			<p id="folder-name"></p> <!-- 폴더 이름을 출력할 위치 -->
 			<ul id="file-list"></ul>
@@ -20,7 +20,8 @@
 		<button id="save-text-file">텍스트 파일 저장</button>
 		<p>사용 방법: 업로드 후 드래그</p>
 			<p>
-			되돌리기: Shift+Z<br>다시실행: Shift+X<br>
+			되돌리기: Shift+Z<br>다시실행: Shift+X<br>십자선: Ctrl+Spacce
+			<br>라벨링 텍스트로 이동: 폴리곤 위에 마우스를 올려 툴팁을 표시한 후, 방향키 ← 또는 →를 눌러 이동
 			</p>
         <button class="accordion">특수문자 열기/닫기</button>
         <div class="panel">
@@ -31,16 +32,21 @@
             <span class="special-char" onclick="copyToClipboard('Ⅲ')">Ⅲ</span>
             <span class="special-char" onclick="copyToClipboard('Ⅳ')">Ⅳ</span>
             <span class="special-char" onclick="copyToClipboard('Ⅴ')">Ⅴ</span>
-            <span class="special-char" onclick="copyToClipboard('✓')">✓</span>
+			<span class="special-char" onclick="copyToClipboard('Ⅵ')">Ⅵ</span>
             <span class="special-char" onclick="copyToClipboard('←')">←</span>
             <span class="special-char" onclick="copyToClipboard('↑')">↑</span>
             <span class="special-char" onclick="copyToClipboard('→')">→</span>
-            <span class="special-char" onclick="copyToClipboard('↓')">↓</span>
+            <span class="special-char" onclick="copyToClipboard('↓')">↓</span><br>
             <span class="special-char" onclick="copyToClipboard('☞')">☞</span>
+            <span class="special-char" onclick="copyToClipboard('☜')">☜</span>
+			<span class="special-char" onclick="copyToClipboard('✓')">✓</span>
             <span class="special-char" onclick="copyToClipboard('●')">●</span>
             <span class="special-char" onclick="copyToClipboard('■')">■</span>
+			<span class="special-char" onclick="copyToClipboard('◆')">◆</span>
+			<span class="special-char" onclick="copyToClipboard('◀')">◀</span>
             <span class="special-char" onclick="copyToClipboard('▲')">▲</span>
             <span class="special-char" onclick="copyToClipboard('▶')">▶</span>
+			<span class="special-char" onclick="copyToClipboard('▼')">▼</span>
             <!-- 추가로 원하는 특수문자를 여기에 추가 -->
         </div>
         <div id="cropped-images-container"></div><br>
@@ -51,13 +57,15 @@
 				<div>
 					<input type="file" id="file-input-txt" accept=".txt" />
 				</div>
-				<button id="load-coordinates-button">기존 폴리곤 적용</button>
-				<button id="reset-existing-coordinates-button">폴리곤 초기화</button>
-				<button id="toggle-existing-coordinates-button">토글</button>
-				<textarea id="coordinates-input" class="input-large2" placeholder="이 텍스트가 저장됩니다."></textarea>
+				<button id="load-coordinates-button">기존 폴리곤 적용 (자동으로 실행 중)</button>
+				<!-- <button id="reset-existing-coordinates-button">폴리곤 초기화</button> -->
+				<!-- button id="toggle-existing-coordinates-button">토글</button> -->
+				<h3>이 텍스트가 저장됩니다.</h3>
+				<textarea id="coordinates-input" class="input-large2" ></textarea>
 			</div>
 			<div id="coordinates-cropped-container">
-                <button id="copy-button">좌표 복사</button>
+				<h3>좌표 작업</h3>
+				<button id="copy-button">좌표 복사</button>
                 <textarea id="coordinates" class="input-large"></textarea>
 			</div>
 			<div class="controls">
@@ -72,20 +80,28 @@
 			</div>
 			<div id="coordinates-cropped-container">
 					<button id="copy-json-button">JSON 복사</button>
-					<button id="scroll-top">맨 위로</button>
-					<textarea id="json-output"></textarea>
+
+					<textarea id="json-output"placeholder="새 JSON 데이터가 여기에 표시됩니다." readonly></textarea>
 			</div>
 				<div class="input-section">
+					<div id="selected-file-name"> <span id="current-file-name">선택된 파일 없음</span></div>
 					<h2>기존 JSON 파일 불러오기</h2>
 					<input type="file" id="load-json-file" accept=".json">
-					<textarea id="json-raw" placeholder="기존 JSON 데이터가 여기에 표시됩니다..." readonly></textarea>
+					<textarea id="json-raw" placeholder="기존 JSON 데이터가 여기에 표시됩니다." readonly></textarea>
 				</div>
 					<button id="merge-json">데이터 병합</button>
 				<div class="input-section">
 					<h2>병합된 JSON</h2>
-					<textarea id="merged-json" placeholder="병합된 JSON 데이터가 여기에 표시됩니다..." readonly></textarea>
+					<textarea id="merged-json" placeholder="병합된 JSON 데이터가 여기에 표시됩니다." readonly></textarea>
 					<button id="save-json">병합된 JSON 저장</button>
 				</div>
+				<br><br><br><br><br>
+				<button id="scroll-top">맨 위로</button>
+				
+				<div id="tooltip" style="display: none;">
+					<div id="tooltip-text"></div>
+				</div>
+
 	</main>
 	</div>
     <script src="script.js"></script>

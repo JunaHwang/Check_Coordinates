@@ -1,4 +1,4 @@
-function openTab(evt, tabName) {
+/* function openTab(evt, tabName) {
     // 모든 탭 콘텐츠를 숨김
     const tabcontents = document.querySelectorAll(".tabcontent");
     tabcontents.forEach(content => {
@@ -23,7 +23,7 @@ function openTab(evt, tabName) {
         document.getElementById('coordinate-check').style.width = '100%';
         document.getElementById('coordinate-check').style.height = '100%';
     }
-}
+} */
 
 /* function goHome() {
 	var i, tabcontent, tablinks;
@@ -36,10 +36,10 @@ function openTab(evt, tabName) {
 		tablinks[i].className = tablinks[i].className.replace(" active", "");
 	}
 	document.getElementById("homeContent").style.display = "block";
-} */
+}
 
 
-/* window.onload = function() {
+window.onload = function() {
 	goHome(); // 페이지 로드 시 '홈' 탭 열기
 }; */
 
@@ -95,7 +95,7 @@ canvas.addEventListener('mousemove', drawRectangle);
 canvas.addEventListener('mouseup', finishDrawing);
 copyButton.addEventListener('click', copyCoordinatesToClipboard);
 copyJsonButton.addEventListener('click', copyJsonToClipboard);
-resetButton.addEventListener('click', resetCanvas);
+/* resetButton.addEventListener('click', resetCanvas); */
 undoButton.addEventListener('click', undoLastAction);
 redoButton.addEventListener('click', redoLastAction); // 되돌리기 취소 버튼에 이벤트 추가
 
@@ -291,7 +291,7 @@ function copyJsonToClipboard() {
     }
 }
 
-function resetCanvas() {
+/* function resetCanvas() {
     undoStack = []; // 되돌리기 스택 초기화
     redoStack = []; // 되돌리기 취소 스택 초기화
     rectangles = [];
@@ -304,7 +304,7 @@ function resetCanvas() {
 	
 	canvas.width = 0;
     canvas.height = 0;
-}
+} */
 
 function initializeCanvas() {
     canvas.width = 0;
@@ -365,7 +365,7 @@ loadCoordinatesButton.addEventListener('click', () => {
     const inputText = coordinatesInput.value.trim();
     if (inputText) {
         loadExistingCoordinates(inputText);
-		showToast('적용 되었습니다.');
+		/* showToast('적용 되었습니다.'); */
     }
 });
 
@@ -417,15 +417,21 @@ function drawRectangles() {
             const y3 = Math.floor(rect.y3);
             const x4 = Math.floor(rect.x4);
             const y4 = Math.floor(rect.y4);
-
+			
+			// 배경색 설정 (반투명한 오렌지)
+            ctx.fillStyle = 'rgba(255, 165, 0, 0.4)'; // 반투명 오렌지 색
             ctx.strokeStyle = 'orange'; // 형광 주황색
             ctx.lineWidth = 2;
+			
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
             ctx.lineTo(x3, y3);
             ctx.lineTo(x4, y4);
             ctx.closePath();
+			
+			ctx.fill(); // 배경색으로 채우기
+			
             ctx.stroke();
         });
     }
@@ -442,7 +448,7 @@ function drawRectangles() {
         gradient.addColorStop(1, 'blue'); // 파란색
         
         ctx.strokeStyle = gradient; // 그라디언트 적용
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(xmin, ymin);
         ctx.lineTo(xmax, ymin);
@@ -456,10 +462,10 @@ function drawRectangles() {
     });
 }
 
-const resetExistingCoordinatesButton = document.getElementById('reset-existing-coordinates-button');
-resetExistingCoordinatesButton.addEventListener('click', resetExistingCoordinates);
+/* const resetExistingCoordinatesButton = document.getElementById('reset-existing-coordinates-button');
+resetExistingCoordinatesButton.addEventListener('click', resetExistingCoordinates); */
 
-// 기존 좌표 초기화 함수
+/* // 기존 좌표 초기화 함수
 function resetExistingCoordinates() {
     // 기존 좌표를 저장하는 배열을 초기화
     existingRectangles = [];
@@ -468,12 +474,12 @@ function resetExistingCoordinates() {
     drawRectangles(); 
     
     showToast('기존 좌표가 초기화되었습니다.');
-}
+} */
 
 const toggleExistingCoordinatesButton = document.getElementById('toggle-existing-coordinates-button');
 let showExistingCoordinates = true; // 기본적으로 기존 좌표를 표시하도록 설정
 
-toggleExistingCoordinatesButton.addEventListener('click', toggleExistingCoordinates);
+/* toggleExistingCoordinatesButton.addEventListener('click', toggleExistingCoordinates); */
 /* document.addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.altKey && event.code === 'Space') {
         event.preventDefault(); // 기본 동작 방지
@@ -512,27 +518,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const folderInput = document.getElementById('folder-input');
     const image = document.getElementById('image');
     const coordinatesInput = document.getElementById('coordinates-input');
-    const folderNameElement = document.getElementById('folder-name'); // 폴더 이름 표시 요소 추가
-    const resetButton = document.getElementById('reset-button'); // '초기화' 버튼
-    const loadCoordinatesButton = document.getElementById('load-coordinates-button'); // '기존 폴리곤 적용' 버튼
-    const clearDataButton = document.getElementById('clear-data-button'); // '전체 데이터 삭제' 버튼
+    const folderNameElement = document.getElementById('folder-name');
+    const resetButton = document.getElementById('reset-button');
+    const loadCoordinatesButton = document.getElementById('load-coordinates-button');
+    const clearDataButton = document.getElementById('clear-data-button');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
-    if (!fileList || !folderInput || !image || !coordinatesInput || !folderNameElement || !resetButton || !loadCoordinatesButton || !clearDataButton) {
+    let rectangles = [];
+    let activeRectangle = null;
+    let tooltip = document.createElement('div');
+    tooltip.style.position = 'absolute';
+    tooltip.style.background = 'rgba(0, 0, 0, 0.7)';
+    tooltip.style.color = 'white';
+    tooltip.style.padding = '5px';
+    tooltip.style.borderRadius = '3px';
+    tooltip.style.display = 'none';
+    document.body.appendChild(tooltip);
+
+    if (!fileList || !folderInput || !image || !coordinatesInput || !folderNameElement || !resetButton || !loadCoordinatesButton || !clearDataButton || !canvas) {
         console.error('필수 요소가 문서에서 발견되지 않았습니다.');
         return;
     }
 
-    // 폴더 업로드 처리
     folderInput.addEventListener('change', function(event) {
         const files = Array.from(event.target.files);
 
         if (files.length > 0) {
             const firstFile = files[0];
-            const folderName = firstFile.webkitRelativePath.split('/')[0]; // 폴더 이름 추출
-            folderNameElement.textContent = `폴더: ${folderName}`; // 폴더 이름 표시
+            const folderName = firstFile.webkitRelativePath.split('/')[0];
+            folderNameElement.textContent = `폴더: ${folderName}`;
         }
 
-        // 파일 목록을 업데이트
         updateFileList(files);
     });
 
@@ -559,11 +576,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return numA - numB;
         });
 
-        fileList.innerHTML = ''; // 기존 목록 초기화
+        fileList.innerHTML = '';
         sortedNames.forEach(name => {
             const listItem = document.createElement('li');
             listItem.textContent = name;
-            listItem.className = 'file-item'; // file-item 클래스 추가
+            listItem.className = 'file-item';
             listItem.addEventListener('click', () => handleFileClick(fileMap[name]));
             fileList.appendChild(listItem);
         });
@@ -602,17 +619,230 @@ document.addEventListener('DOMContentLoaded', () => {
             const reader = new FileReader();
             reader.onload = function(e) {
                 coordinatesInput.value = e.target.result;
+                parseTextData(e.target.result);
             };
             reader.readAsText(textFile);
         }
     }
 
-    // 전체 데이터 삭제 버튼 클릭 시 페이지 새로 고침
+    function parseTextData(text) {
+        rectangles = [];
+        const lines = text.split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                const [coords, label] = line.split('##::');
+                if (coords && label) {
+                    const [x1, y1, x2, y2, x3, y3, x4, y4] = coords.split(' ').map(Number);
+                    const width = x2 - x1;
+                    const height = y3 - y1;
+                    rectangles.push({
+                        x: x1,
+                        y: y1,
+                        width: width,
+                        height: height,
+                        label: label.trim()
+                    });
+                }
+            }
+        });
+        drawRectangles();
+    }
+
+    function drawRectangles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(image, 0, 0);
+
+        rectangles.forEach((r, i) => {
+            const xmin = Math.floor(r.x);
+            const ymin = Math.floor(r.y);
+            const xmax = Math.floor(r.x + r.width);
+            const ymax = Math.floor(r.y + r.height);
+
+            const gradient = ctx.createLinearGradient(xmin, ymin, xmax, ymax);
+            gradient.addColorStop(0, 'lime');
+            gradient.addColorStop(1, 'blue');
+
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(xmin, ymin);
+            ctx.lineTo(xmax, ymin);
+            ctx.lineTo(xmax, ymax);
+            ctx.lineTo(xmin, ymax);
+            ctx.closePath();
+            ctx.stroke();
+        });
+
+        canvas.addEventListener('mousemove', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            let labelFound = false;
+            activeRectangle = null;
+
+            rectangles.forEach(r => {
+                const xmin = r.x;
+                const ymin = r.y;
+                const xmax = xmin + r.width;
+                const ymax = ymin + r.height;
+
+                if (x >= xmin && x <= xmax && y >= ymin && y <= ymax) {
+                    tooltip.textContent = r.label;
+                    tooltip.style.left = `${event.pageX + 10}px`;
+                    tooltip.style.top = `${event.pageY + 10}px`;
+                    tooltip.style.display = 'block';
+                    labelFound = true;
+                    activeRectangle = r;
+                }
+            });
+
+            if (!labelFound) {
+                tooltip.style.display = 'none';
+            }
+        });
+
+        canvas.addEventListener('mouseout', () => {
+            tooltip.style.display = 'none';
+        });
+    }
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const coordinatesInput = document.getElementById('coordinates-input');
+
+    function findAndScrollToCoordinates(targetCoords, targetLabel) {
+        const lines = coordinatesInput.value.split('\n');
+        let lineNumber = -1;
+
+        // 각 라인을 순회하면서 좌표와 라벨을 파싱하여 비교
+        lines.forEach((line, index) => {
+            const [coords, label] = line.split('##::');
+            if (coords && label) {
+                const parsedCoords = coords.trim().split(' ').map(Number);
+                const parsedLabel = label.trim();
+
+                // 좌표와 라벨을 비교하여 모두 일치하는 경우
+                if (compareCoordinates(parsedCoords, targetCoords) && parsedLabel === targetLabel) {
+                    lineNumber = index;
+                }
+            }
+        });
+
+        // 일치하는 줄을 찾은 경우
+        if (lineNumber !== -1) {
+            coordinatesInput.focus();
+
+            // 줄의 높이를 계산하여 스크롤 위치를 조정
+            const lineHeight = parseFloat(window.getComputedStyle(coordinatesInput).lineHeight);
+
+            // 중앙에 위치하도록 스크롤 위치 계산
+            const scrollTop = lineHeight * lineNumber - coordinatesInput.clientHeight / 2;
+            coordinatesInput.scrollTop = scrollTop;
+
+            // 텍스트 선택 범위 설정
+            const textUpToLine = lines.slice(0, lineNumber).join('\n') + '\n';
+            const startIndex = textUpToLine.length;
+            const endIndex = startIndex + lines[lineNumber].length;
+            coordinatesInput.setSelectionRange(startIndex, endIndex);
+
+            // 텍스트 영역 포커스
+            coordinatesInput.focus();
+        } else {
+            console.log('일치하는 좌표와 라벨을 찾을 수 없습니다.');
+        }
+    }
+
+    // 좌표 비교 함수
+    function compareCoordinates(coords1, coords2) {
+        if (coords1.length !== coords2.length) {
+            return false;
+        }
+        for (let i = 0; i < coords1.length; i++) {
+            if (coords1[i] !== coords2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 예시: 특정 좌표와 라벨로 스크롤을 찾기
+    const targetCoords = [195, 90, 699, 90, 699, 212, 195, 212];
+    const targetLabel = "exampleLabel"; // 예시 라벨
+    findAndScrollToCoordinates(targetCoords, targetLabel);
+});
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('keydown', (event) => {
+    if (tooltip.style.display === 'block') {
+        if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+            event.preventDefault(); // 기본 동작 방지
+            if (activeRectangle) {
+                findAndScrollToLine(activeRectangle.label);
+            }
+        }
+    }
+});
+
+
+
+function findAndScrollToLine(text) {
+    const lines = coordinatesInput.value.split('\n');
+    let lineNumber = -1;
+
+    // 텍스트가 포함된 줄을 찾기
+    lines.forEach((line, index) => {
+        if (line.includes(text)) {
+            lineNumber = index;
+        }
+    });
+
+    if (lineNumber !== -1) {
+        coordinatesInput.focus();
+
+        // 줄의 높이를 계산하여 스크롤 위치를 조정
+        const lineHeight = parseFloat(window.getComputedStyle(coordinatesInput).lineHeight);
+
+        // 전체 높이 조정을 고려하여 스크롤 위치 계산
+        const scrollTop = lineHeight * lineNumber - coordinatesInput.clientHeight / 2; // 중앙에 위치하도록 조정
+        
+        // 스크롤 위치 설정
+        coordinatesInput.scrollTop = scrollTop;
+
+        const textUpToLine = lines.slice(0, lineNumber).join('\n') + '\n';
+        const startIndex = textUpToLine.length; // 현재 라인까지의 문자 길이
+        const endIndex = startIndex + lines[lineNumber].length; // 라인의 끝 인덱스
+
+        // 선택 범위 설정
+        coordinatesInput.setSelectionRange(startIndex, endIndex);
+
+        // 텍스트 영역 포커스
+        coordinatesInput.focus();
+    } else {
+        console.log('텍스트와 일치하는 라인이 없습니다.');
+    }
+}
+
+
+
+
+
     clearDataButton.addEventListener('click', () => {
         window.location.reload();
     });
 
-    // 파일 항목 클릭 시 선택 처리
     fileList.addEventListener('click', function(event) {
         if (event.target.classList.contains('file-item')) {
             document.querySelectorAll('#file-list .file-item').forEach(el => el.classList.remove('selected'));
@@ -622,12 +852,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
+
 document.addEventListener('keydown', function(event) {
 // Ctrl + Space를 눌렀을 때
 if (event.ctrlKey && event.code === 'Space') {
 	event.preventDefault(); // 기본 동작 방지
 	document.getElementById('load-coordinates-button').click(); // 버튼 클릭
-	showToast('적용 되었습니다.');
+	/* showToast('적용 되었습니다.'); */
 }
 });
 
@@ -717,6 +950,7 @@ function saveTextFile() {
 }
 
 
+
 // JSON IMAGE 추가
 
 let fileName = '';
@@ -740,7 +974,7 @@ document.getElementById('merge-json').addEventListener('click', function() {
 		const newJsonText = document.getElementById('json-output').value;
 
 		if (!existingJsonText || !newJsonText) {
-			alert('기존 JSON 데이터와 추가할 JSON 데이터 모두 입력해야 합니다.');
+			showToast('기존 JSON 데이터와 추가할 JSON 데이터 모두 입력해야 합니다.');
 			return;
 		}
 
@@ -753,7 +987,7 @@ document.getElementById('merge-json').addEventListener('click', function() {
 		// 병합된 JSON 출력
 		document.getElementById('merged-json').value = JSON.stringify(mergedJson, null, 2);
 	} catch (error) {
-		alert('JSON 데이터 처리 중 오류가 발생했습니다.');
+		showToast('JSON 데이터 처리 중 오류가 발생했습니다.');
 	}
 });
 
@@ -799,3 +1033,160 @@ function copyToClipboard(character) {
         .then(() => showToast(character + ' 복사 완료'))
         .catch(err => console.error('복사 실패: ', err));
 }
+
+
+
+// 통합된 초기화 함수
+function resetAll() {
+    // 캔버스 및 관련 데이터 초기화
+    undoStack = []; // 되돌리기 스택 초기화
+    redoStack = []; // 되돌리기 취소 스택 초기화
+    rectangles = [];
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    updateCoordinatesDisplay();
+    updateJSONDisplay();
+    updateCroppedImages();
+    image.src = ''; 
+    fileInputImage.value = ''; 
+    canvas.width = 0;
+    canvas.height = 0;
+    
+    // 기존 좌표 초기화
+    existingRectangles = [];
+    drawRectangles(); // 캔버스를 다시 그립니다.
+    
+    // JSON 관련 초기화
+    document.getElementById('json-raw').value = ''; // 기존 JSON 데이터 초기화
+/*     document.getElementById('json-output').value = ''; // 새로운 JSON 데이터 초기화 */
+    document.getElementById('merged-json').value = ''; // 병합된 JSON 데이터 초기화
+    
+    // 선택된 JSON 파일 초기화
+    const loadJsonFileInput = document.getElementById('load-json-file');
+    loadJsonFileInput.value = ''; // JSON 파일 선택 초기화
+    
+    fileName = ''; // 파일 이름 초기화
+    
+    // 좌표 표시 초기화
+    const coordinatesDisplay = document.getElementById('coordinates');
+    coordinatesDisplay.textContent = ''; // 좌표 표시 내용 초기화
+	
+	
+	
+	
+    /* showToast('모든 데이터가 초기화되었습니다.'); // 초기화 완료 알림 */
+}
+
+// 초기화 버튼 클릭 이벤트
+document.getElementById('reset-button').addEventListener('click', resetAll);
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 십자가 요소 생성
+    const crosshairLines = document.createElement('div');
+    crosshairLines.id = 'crosshair-lines';
+    
+    // 수평 선 생성
+    const horizontalLine = document.createElement('div');
+    horizontalLine.className = 'line horizontal';
+    crosshairLines.appendChild(horizontalLine);
+
+    // 수직 선 생성
+    const verticalLine = document.createElement('div');
+    verticalLine.className = 'line vertical';
+    crosshairLines.appendChild(verticalLine);
+
+    // 페이지에 추가
+    document.body.appendChild(crosshairLines);
+
+    // 십자선 표시 여부
+    let isCrosshairVisible = true;
+
+    // 십자선의 길이 업데이트
+    function updateCrosshairSize() {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        // 길이를 뷰포트의 비율로 설정 (예: 20% 길이)
+        const crosshairSize = Math.min(viewportWidth, viewportHeight) * 0.3;
+
+        return crosshairSize;
+    }
+
+    // 십자선의 위치와 길이 업데이트
+    function updateCrosshairPosition(event) {
+        const { clientX: x, clientY: y } = event;
+
+        if (isCrosshairVisible) {
+            const crosshairSize = updateCrosshairSize(); // 크기 업데이트
+
+            // 수평 선 설정
+            horizontalLine.style.left = `${Math.max(0, x - crosshairSize / 2)}px`;
+            horizontalLine.style.width = `${crosshairSize}px`;
+            horizontalLine.style.top = `${y}px`;
+
+            // 수직 선 설정
+            verticalLine.style.top = `${Math.max(0, y - crosshairSize / 2)}px`;
+            verticalLine.style.height = `${crosshairSize}px`;
+            verticalLine.style.left = `${x}px`;
+        }
+    }
+
+    document.addEventListener('mousemove', updateCrosshairPosition);
+    window.addEventListener('resize', updateCrosshairPosition); // 화면 크기 변경 시 업데이트
+
+    // 십자선 토글 함수
+    function toggleCrosshair() {
+        isCrosshairVisible = !isCrosshairVisible;
+        crosshairLines.style.display = isCrosshairVisible ? 'block' : 'none';
+    }
+
+    // 단축키 이벤트 리스너
+    document.addEventListener('keydown', (event) => {
+        if (event.ctrlKey && event.code === 'Space') {
+            event.preventDefault(); // 기본 스페이스바 동작 방지
+            toggleCrosshair();
+        }
+    });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const fileList = document.getElementById('file-list');
+    const currentFileNameElement = document.getElementById('current-file-name');
+    
+    // 파일 목록 클릭 이벤트 리스너
+    fileList.addEventListener('click', (event) => {
+        // 클릭된 요소가 리스트 아이템인지 확인
+        if (event.target.tagName === 'LI') {
+            // 클릭된 파일의 이름을 가져옴
+            const selectedFileName = event.target.textContent;
+            
+            // 현재 선택된 파일 이름을 업데이트
+            currentFileNameElement.textContent = selectedFileName;
+            
+            // 선택된 파일을 처리하는 추가 작업이 필요한 경우 여기에 추가
+        }
+    });
+    
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
