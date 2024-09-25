@@ -511,7 +511,6 @@ function handleTxtFileSelect(event) {
 
 
 // 좌표 확인 탭 기능
-// script.js
 
 document.addEventListener('DOMContentLoaded', () => {
     const fileList = document.getElementById('file-list');
@@ -723,8 +722,8 @@ document.addEventListener('DOMContentLoaded', () => {
         lines.forEach((line, index) => {
             const [coords, label] = line.split('##::');
             if (coords && label) {
-                const parsedCoords = coords.trim().split(' ').map(Number);
-                const parsedLabel = label.trim();
+                const parsedCoords = coords.trim().split(' ').map(Number); // 좌표 파싱
+                const parsedLabel = label.trim(); // 라벨 파싱
 
                 // 좌표와 라벨을 비교하여 모두 일치하는 경우
                 if (compareCoordinates(parsedCoords, targetCoords) && parsedLabel === targetLabel) {
@@ -757,23 +756,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 좌표 비교 함수
+    // 좌표 비교 함수 (좌표를 비교할 때 약간의 오차 허용)
     function compareCoordinates(coords1, coords2) {
         if (coords1.length !== coords2.length) {
             return false;
         }
         for (let i = 0; i < coords1.length; i++) {
-            if (coords1[i] !== coords2[i]) {
+            // 좌표 비교 시, 소수점 차이로 인해 비교가 실패하지 않도록 오차 허용
+            if (Math.abs(coords1[i] - coords2[i]) > 0.01) { // 소수점 이하 오차 허용 범위 설정
                 return false;
             }
         }
         return true;
     }
 
-    // 예시: 특정 좌표와 라벨로 스크롤을 찾기
-    const targetCoords = [195, 90, 699, 90, 699, 212, 195, 212];
-    const targetLabel = "exampleLabel"; // 예시 라벨
-    findAndScrollToCoordinates(targetCoords, targetLabel);
 });
 
 
@@ -790,50 +786,67 @@ document.addEventListener('keydown', (event) => {
         if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
             event.preventDefault(); // 기본 동작 방지
             if (activeRectangle) {
-                findAndScrollToLine(activeRectangle.label);
+                findAndScrollToCoordinates(activeRectangle.x, activeRectangle.y, activeRectangle.label);
             }
         }
     }
 });
 
-
-
-function findAndScrollToLine(text) {
+function findAndScrollToCoordinates(targetX, targetY, targetLabel) {
     const lines = coordinatesInput.value.split('\n');
     let lineNumber = -1;
 
-    // 텍스트가 포함된 줄을 찾기
     lines.forEach((line, index) => {
-        if (line.includes(text)) {
-            lineNumber = index;
+        const [coords, label] = line.split('##::');
+        if (coords && label) {
+            const parsedCoords = coords.trim().split(' ').map(Number);
+            const parsedLabel = label.trim();
+
+            // 사각형의 좌표 범위를 계산
+            const xCoords = [parsedCoords[0], parsedCoords[2]]; // x1, x3
+            const yCoords = [parsedCoords[1], parsedCoords[5]]; // y1, y4
+
+            // x와 y좌표가 사각형 내부에 있는지 확인
+            if (
+                targetX >= Math.min(...xCoords) &&
+                targetX <= Math.max(...xCoords) &&
+                targetY >= Math.min(...yCoords) &&
+                targetY <= Math.max(...yCoords) &&
+                parsedLabel === targetLabel
+            ) {
+                lineNumber = index;
+            }
         }
     });
 
+    // 일치하는 줄을 찾은 경우
     if (lineNumber !== -1) {
         coordinatesInput.focus();
 
         // 줄의 높이를 계산하여 스크롤 위치를 조정
         const lineHeight = parseFloat(window.getComputedStyle(coordinatesInput).lineHeight);
 
-        // 전체 높이 조정을 고려하여 스크롤 위치 계산
-        const scrollTop = lineHeight * lineNumber - coordinatesInput.clientHeight / 2; // 중앙에 위치하도록 조정
-        
-        // 스크롤 위치 설정
+        // 중앙에 위치하도록 스크롤 위치 계산
+        const scrollTop = lineHeight * lineNumber - coordinatesInput.clientHeight / 2;
         coordinatesInput.scrollTop = scrollTop;
 
+        // 텍스트 선택 범위 설정
         const textUpToLine = lines.slice(0, lineNumber).join('\n') + '\n';
-        const startIndex = textUpToLine.length; // 현재 라인까지의 문자 길이
-        const endIndex = startIndex + lines[lineNumber].length; // 라인의 끝 인덱스
-
-        // 선택 범위 설정
+        const startIndex = textUpToLine.length;
+        const endIndex = startIndex + lines[lineNumber].length;
         coordinatesInput.setSelectionRange(startIndex, endIndex);
 
         // 텍스트 영역 포커스
         coordinatesInput.focus();
     } else {
-        console.log('텍스트와 일치하는 라인이 없습니다.');
+        console.log('일치하는 좌표와 라벨을 찾을 수 없습니다.');
     }
 }
+
+
+
+
+
 
 
 
