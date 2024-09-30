@@ -556,12 +556,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const fileMap = {};
 
         files.forEach(file => {
-            if (file.type === 'image/png' || file.type === 'text/plain') {
+            if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'text/plain') {
                 const name = file.name.split('.').slice(0, -1).join('.');
                 if (!fileMap[name]) {
                     fileMap[name] = {};
                 }
-                if (file.type === 'image/png') {
+                if (file.type === 'image/png' || file.type === 'image/jpeg') {
                     fileMap[name].image = file;
                 } else if (file.type === 'text/plain') {
                     fileMap[name].text = file;
